@@ -11,8 +11,7 @@ namespace TranporteSistem.Models
         public int Sucursal_Id { get; set; }
         public double Distancia { get; set; }
 
-        public Colaborador Colaborador { get; set; }
-        public Sucursal Sucursal { get; set; }
+        public Boolean Estado { get; set; } = true;
 
     }
 }

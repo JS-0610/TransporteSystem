@@ -9,7 +9,5 @@ namespace TranporteSistem.Models
         public int Viaje_Id { get; set; }
         public int SucursalColaborador_Id { get; set; }
 
-        public Viaje Viaje { get; set; }
-        public SucursalColaborador SucursalColaborador { get; set; }
     }
 }

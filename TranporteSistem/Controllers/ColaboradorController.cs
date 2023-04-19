@@ -1,10 +1,6 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
 using TranporteSistem.Features.Colaborador.DTO;
 using TranporteSistem.Models;
-using TranporteSistem.Features.Colaborador.Services;
 using TranporteSistem.Interfaces;
 
 namespace TranporteSistem.Controllers
@@ -23,13 +19,26 @@ namespace TranporteSistem.Controllers
         {
             try
             {
-                return await _services.ObtenerColaboradores();
+                var ListadoColaboradores = await _services.ObtenerColaboradores();
+                return ListadoColaboradores;
             }
             catch (Exception)
             {
-                return NotFound("Colaborador no encontrado");
+                return NotFound("Error en la Conexión");
             }
-           
+        }
+
+        [HttpGet("nombres")]
+        public async Task<ActionResult<List<ColaboradorResponseNombreIdDto>>> GetNombres()
+        {
+            try
+            {
+                return await _services.ObtenerNombreColaboradores(); ;
+            }
+            catch (Exception)
+            {
+                return NotFound("Error en la Conexión");
+            }
         }
 
         [HttpPost]
@@ -42,16 +51,34 @@ namespace TranporteSistem.Controllers
             }
             catch (Exception)
             {
-                return NotFound("Colaborador no encontrado");
+                return NotFound("Error de Conexión");
             }
-            return Ok();
         }
 
-        [HttpPut("{id:int}")]
-        public async Task<ActionResult> Put(ColaboradorRequestDto colaboradorRequest, int id)
+        [HttpPut]
+        public async Task<ActionResult> Put(ColaboradorRequestPutDto colaboradorRequest)
         {
-            
-            return Ok();
+            try
+            {
+                return await _services.ActualizarColaborador(colaboradorRequest);
+            }
+            catch (Exception)
+            {
+                return NotFound("Erro de Conexión");
+            }
+        }
+
+        [HttpDelete]
+        public async Task<ActionResult> Delete(ColaboradorRequestDeleteDto colaboradorRequest)
+        {
+            try
+            {
+                return await _services.EliminarColaborador(colaboradorRequest);
+            }
+            catch (Exception)
+            {
+                return NotFound("Erro de Conexión");
+            }
         }
     }
 }

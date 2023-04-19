@@ -2,7 +2,8 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using TranporteSistem.DTO.Sucursal;
+using TranporteSistem.Features.Sucursal.DTO;
+using TranporteSistem.Interfaces;
 using TranporteSistem.Models;
 
 namespace TranporteSistem.Controllers
@@ -11,45 +12,84 @@ namespace TranporteSistem.Controllers
     [ApiController]
     public class SucursalController : ControllerBase
     {
-        public readonly ApplicationDbContext _context;
-        public readonly IMapper _mapper;
+        private readonly ISucursalServices _services;
 
-        public SucursalController(ApplicationDbContext context,IMapper mapper)
+        public SucursalController(ISucursalServices services)
         {
-            _context = context;
-            _mapper = mapper;
+            _services = services;
         }
 
         [HttpGet]
         public async Task<ActionResult<List<Sucursal>>> Get()
         {
-            return await _context.Sucursal.ToListAsync();
+            try
+            {
+                return await _services.ObtenerSucursales();
+            }
+            catch (Exception)
+            {
+
+                return NotFound("Error en la Conexión");
+            }
+        }
+
+        [HttpGet("nombres")]
+        public async Task<ActionResult<List<SucursalResponseNombreIdDto>>> GetNombres()
+        {
+            try
+            {
+                return await _services.ObtenerNombreSucursales();
+            }
+            catch (Exception)
+            {
+
+                return NotFound("Error en la Conexión");
+            }
         }
 
         [HttpPost]
         public async Task<ActionResult> Post(SucursalRequestDto sucursalRequest)
         {
-            var sucursal = _mapper.Map<Sucursal>(sucursalRequest);
-            _context.Add(sucursal);
-            await _context.SaveChangesAsync();
-            return Ok();
-        }
-
-        [HttpPut("{id:int}")]
-        public async Task<ActionResult> Put(SucursalRequestDto sucursalRequest, int id)
-        {
-            var existe = await _context.Sucursal.AnyAsync(x => x.Sucursal_Id == id);
-            if (!existe)
+            try
             {
-                return NotFound("Sucursal no encontrada");
+                return await _services.AgregarSucursal(sucursalRequest);
             }
-            var sucursal = _mapper.Map<Sucursal>(sucursalRequest);
-            sucursal.Sucursal_Id = id;
-            _context.Update(sucursal);
-            await _context.SaveChangesAsync();
-            return Ok();
+            catch (Exception)
+            {
+
+                return NotFound("Error en la Conexión");
+            }
+        }
+
+        [HttpPut]
+        public async Task<ActionResult> Put(SucursalRequestPutDto sucursalRequest)
+        {
+            try
+            {
+                return await _services.ActualizarSucursal(sucursalRequest);
+            }
+            catch (Exception)
+            {
+
+                return NotFound("Error en la Conexión");
+            }
 
         }
-        
+
+        [HttpDelete]
+        public async Task<ActionResult> Delete(SucursalRequestDeleteDto sucursalRequest)
+        {
+            try
+            {
+                return await _services.EliminarSucursal(sucursalRequest);
+            }
+            catch (Exception)
+            {
+
+                return NotFound("Error en la Conexión");
+            }
+
+        }
+
     }
 }

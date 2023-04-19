@@ -2,7 +2,8 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using TranporteSistem.DTO.Transportista;
+using TranporteSistem.Features.Transportista.Dto;
+using TranporteSistem.Interfaces;
 using TranporteSistem.Models;
 
 namespace TranporteSistem.Controllers
@@ -11,42 +12,76 @@ namespace TranporteSistem.Controllers
     [ApiController]
     public class TransportistaController : ControllerBase
     {
-        public readonly ApplicationDbContext _context;
-        public readonly IMapper _mapper;
+        public readonly ITransportistaServices _services;
 
-        public TransportistaController(ApplicationDbContext context,IMapper mapper)
+        public TransportistaController(ITransportistaServices services)
         {
-            _context = context;
-            _mapper = mapper;
+            _services = services;
         }
 
         [HttpGet]
         public async Task<ActionResult<List<Transportista>>> Get()
         {
-            return await _context.Transportista.ToListAsync();
+            try
+            {
+                return await _services.ObtenerTransportistas();
+            }
+            catch (Exception)
+            {
+                return NotFound("Error en la conexión");
+            }
+        }
+
+        [HttpGet("Nombres")]
+        public async Task<ActionResult<List<TransportistaResponseNombreIdDto>>> GetNombre()
+        {
+            try
+            {
+                return await _services.ObtenerNombreTransportista();
+            }
+            catch (Exception)
+            {
+                return NotFound("Error en la conexión");
+            }
         }
 
         [HttpPost]
         public async Task<ActionResult> Post(TransportistaRequestDto transportistaRequest)
         {
-            var transportista = _mapper.Map<Transportista>(transportistaRequest);
-            _context.Transportista.Add(transportista);
-            await _context.SaveChangesAsync();
-            return Ok();
+            try
+            {
+                return await _services.AgregarTransportista(transportistaRequest);
+            }
+            catch (Exception)
+            {
+                return NotFound("Error en la conexión");
+            }
         }
 
-        [HttpPut("{id:int}")]
-        public async Task<ActionResult> Put(TransportistaRequestDto transportistaRequest, int id)
+        [HttpPut]
+        public async Task<ActionResult> Put(TransportistaRequestPutDto transportistaRequest)
         {
-            var existe = await _context.Transportista.AnyAsync(x => x.Transportista_Id == id);
-            if (!existe)
+            try
             {
-                return NotFound("Transportista no encontrado");
+                return await _services.ActualizarTransportista(transportistaRequest);
             }
-            var transportista = _mapper.Map<Transportista>(transportistaRequest);
-            _context.Update(transportista);
-            await _context.SaveChangesAsync();
-            return Ok();
+            catch (Exception)
+            {
+                return NotFound("Error en la conexión");
+            }
+        }        
+        
+        [HttpDelete]
+        public async Task<ActionResult> Delete(TransportistaRequestDeleteDto transportistaRequest)
+        {
+            try
+            {
+                return await _services.EliminarTransportista(transportistaRequest);
+            }
+            catch (Exception)
+            {
+                return NotFound("Error en la conexión");
+            }
         }
     }
 }

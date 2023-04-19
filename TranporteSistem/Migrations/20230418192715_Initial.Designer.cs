@@ -12,8 +12,8 @@ using TranporteSistem.Models;
 namespace TranporteSistem.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230413195754_initial")]
-    partial class initial
+    [Migration("20230418192715_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -38,6 +38,9 @@ namespace TranporteSistem.Migrations
 
                     b.Property<string>("Dni")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Estado")
+                        .HasColumnType("bit");
 
                     b.Property<DateTime>("FechaNacimiento")
                         .HasColumnType("datetime2");
@@ -67,6 +70,9 @@ namespace TranporteSistem.Migrations
                     b.Property<string>("Direccion")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("Estado")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Nombre")
                         .HasColumnType("nvarchar(max)");
 
@@ -92,6 +98,9 @@ namespace TranporteSistem.Migrations
                     b.Property<double>("Distancia")
                         .HasColumnType("float");
 
+                    b.Property<bool>("Estado")
+                        .HasColumnType("bit");
+
                     b.Property<int>("Sucursal_Id")
                         .HasColumnType("int");
 
@@ -114,6 +123,9 @@ namespace TranporteSistem.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Transportista_Id"));
+
+                    b.Property<bool>("Estado")
+                        .HasColumnType("bit");
 
                     b.Property<DateTime>("FechaNacimiento")
                         .HasColumnType("datetime2");
@@ -146,23 +158,13 @@ namespace TranporteSistem.Migrations
                     b.Property<int>("Sucursal_Id")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Sucursal_Id1")
-                        .HasColumnType("int");
-
                     b.Property<double>("Total")
                         .HasColumnType("float");
 
                     b.Property<int>("Transportista_Id")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Transportista_Id1")
-                        .HasColumnType("int");
-
                     b.HasKey("Viaje_Id");
-
-                    b.HasIndex("Sucursal_Id1");
-
-                    b.HasIndex("Transportista_Id1");
 
                     b.ToTable("Viaje");
                 });
@@ -178,20 +180,10 @@ namespace TranporteSistem.Migrations
                     b.Property<int>("SucursalColaborador_Id")
                         .HasColumnType("int");
 
-                    b.Property<int?>("SucursalColaborador_Id1")
-                        .HasColumnType("int");
-
                     b.Property<int>("Viaje_Id")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Viaje_Id1")
-                        .HasColumnType("int");
-
                     b.HasKey("ViajeDetalle_Id");
-
-                    b.HasIndex("SucursalColaborador_Id1");
-
-                    b.HasIndex("Viaje_Id1");
 
                     b.ToTable("ViajeDetalle");
                 });
@@ -199,11 +191,11 @@ namespace TranporteSistem.Migrations
             modelBuilder.Entity("TranporteSistem.Models.SucursalColaborador", b =>
                 {
                     b.HasOne("TranporteSistem.Models.Colaborador", "Colaborador")
-                        .WithMany()
+                        .WithMany("SucursalColaborador")
                         .HasForeignKey("Colaborador_Id1");
 
                     b.HasOne("TranporteSistem.Models.Sucursal", "Sucursal")
-                        .WithMany()
+                        .WithMany("SucursalColaborador")
                         .HasForeignKey("Sucursal_Id1");
 
                     b.Navigation("Colaborador");
@@ -211,34 +203,14 @@ namespace TranporteSistem.Migrations
                     b.Navigation("Sucursal");
                 });
 
-            modelBuilder.Entity("TranporteSistem.Models.Viaje", b =>
+            modelBuilder.Entity("TranporteSistem.Models.Colaborador", b =>
                 {
-                    b.HasOne("TranporteSistem.Models.Sucursal", "Sucursal")
-                        .WithMany()
-                        .HasForeignKey("Sucursal_Id1");
-
-                    b.HasOne("TranporteSistem.Models.Transportista", "Transportista")
-                        .WithMany()
-                        .HasForeignKey("Transportista_Id1");
-
-                    b.Navigation("Sucursal");
-
-                    b.Navigation("Transportista");
+                    b.Navigation("SucursalColaborador");
                 });
 
-            modelBuilder.Entity("TranporteSistem.Models.ViajeDetalle", b =>
+            modelBuilder.Entity("TranporteSistem.Models.Sucursal", b =>
                 {
-                    b.HasOne("TranporteSistem.Models.SucursalColaborador", "SucursalColaborador")
-                        .WithMany()
-                        .HasForeignKey("SucursalColaborador_Id1");
-
-                    b.HasOne("TranporteSistem.Models.Viaje", "Viaje")
-                        .WithMany()
-                        .HasForeignKey("Viaje_Id1");
-
                     b.Navigation("SucursalColaborador");
-
-                    b.Navigation("Viaje");
                 });
 #pragma warning restore 612, 618
         }

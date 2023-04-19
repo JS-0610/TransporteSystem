@@ -8,7 +8,10 @@ namespace TranporteSistem.Interfaces
     public interface IColaboradorServices
     {
         public Task<ActionResult<List<Colaborador>>> ObtenerColaboradores();
+        public Task<ActionResult<List<ColaboradorResponseNombreIdDto>>> ObtenerNombreColaboradores();
         public Task<ActionResult> AgregarColaborador(ColaboradorRequestDto colaboradorRequest);
-        public Task<ActionResult> ActualizarColaborador(Colaborador colaborador);
+        public Task<ActionResult> ActualizarColaborador(ColaboradorRequestPutDto colaborador);
+
+        public Task<ActionResult> EliminarColaborador(ColaboradorRequestDeleteDto colaborador);
     }
 }

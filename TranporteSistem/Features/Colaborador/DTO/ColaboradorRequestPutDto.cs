@@ -2,14 +2,18 @@
 
 namespace TranporteSistem.Features.Colaborador.DTO
 {
-    public class ColaboradorRequestDto
+    public class ColaboradorRequestPutDto
     {
+        [Key]
         [Required]
-        [MaxLength(10,ErrorMessage ="El primer nombre debe ser maximo 10 letras")]
+        public int Colaborador_Id { get; set; }
+
+        [Required]
+        [MaxLength(10, ErrorMessage = "El primer nombre debe ser maximo 10 letras")]
         public string PrimerNombre { get; set; }
 
         [Required]
-        [MaxLength(10, ErrorMessage = "El primer apellido debe ser maximo 10 caracteres")]
+        [MaxLength(10, ErrorMessage = "El primer apellido debe ser maximo 10 letras")]
         public string PrimerApellido { get; set; }
 
         [Required]
@@ -20,12 +24,11 @@ namespace TranporteSistem.Features.Colaborador.DTO
         public DateTime FechaNacimiento { get; set; }
 
         [Required]
-        [MaxLength(50, ErrorMessage = "La direccion debe ser maximo 50 caracteres")]
+        [MaxLength(50, ErrorMessage = "La direccion debe ser maximo 50 Letras")]
         public string Direccion { get; set; }
 
         [Required]
         [MaxLength(14, ErrorMessage = "El Telefono ser maximo 14 numeros")]
         public string Telefono { get; set; }
-
     }
 }

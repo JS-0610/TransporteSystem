@@ -1,8 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc.ViewComponents;
-using Microsoft.EntityFrameworkCore;
-using System.Reflection;
+﻿using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 using TranporteSistem.Features.Colaborador.Services;
+using TranporteSistem.Features.Sucursal.Services;
+using TranporteSistem.Features.SucursalColaborador.Services;
+using TranporteSistem.Features.Transportista.Services;
+using TranporteSistem.Features.Viaje.Services;
+using TranporteSistem.Features.ViajeDetalle.Services;
 using TranporteSistem.Interfaces;
 using TranporteSistem.Models;
 
@@ -22,6 +25,12 @@ namespace TranporteSistem
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
             services.AddScoped<IColaboradorServices, ColaboradorServices>();
+            services.AddScoped<ISucursalServices, SucursalServices>();
+            services.AddScoped<ITransportistaServices, TransportistaServices>();
+            services.AddScoped<ISucursalColaboradorServices, SucursalColaboradorServices>();
+            services.AddScoped<IViajeServices, ViajeServices>();
+            services.AddScoped<IViajeDetalleServices, ViajeDetalleServices>();
+            
             services.AddAutoMapper(typeof(Program).Assembly);
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("defaultConnection")));
         }
