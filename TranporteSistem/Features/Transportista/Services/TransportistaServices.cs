@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using TranporteSistem.Common;
 using TranporteSistem.Features.Transportista.Dto;
 using TranporteSistem.Interfaces;
 using TranporteSistem.Models;
@@ -31,7 +32,7 @@ namespace TranporteSistem.Features.Transportista.Services
             }
             catch (Exception)
             {
-                return NotFound("Error al obtener transportistas");
+                return NotFound(Messages.MSE014);
             }
         }
 
@@ -49,7 +50,7 @@ namespace TranporteSistem.Features.Transportista.Services
             }
             catch (Exception)
             {
-                return NotFound("Error al obtener transportistas");
+                return NotFound(Messages.MSE014);
             }
         }
 
@@ -60,17 +61,17 @@ namespace TranporteSistem.Features.Transportista.Services
                 var existeNombreDuplicado = await _context.Transportista.AnyAsync(x => x.PrimerNombre == transportistaRequest.PrimerNombre && x.Estado == true);
                 if (existeNombreDuplicado)
                 {
-                    return BadRequest("El transportista ya existe");
+                    return BadRequest(Messages.MSI007);
                 }
                 var transportista = _mapper.Map<Models.Transportista>(transportistaRequest);
                 await _context.AddAsync(transportista);
                 await _context.SaveChangesAsync();
-                return Ok("Transportista agregado de forma exitosa");
+                return Ok(Messages.MSC010);
             }
             catch (Exception)
             {
 
-                return NotFound("Error al agregar transportistas");
+                return NotFound(Messages.MSE015);
             }
         }
 
@@ -81,7 +82,7 @@ namespace TranporteSistem.Features.Transportista.Services
                 var existe = await _context.Transportista.AnyAsync(x => x.Transportista_Id == transportistaRequest.Transportista_Id && x.Estado==true);
                 if (!existe)
                 {
-                    return NotFound("Transportista no encontrado");
+                    return NotFound(Messages.MSI008);
                 }
                 var transportista = _mapper.Map<Models.Transportista>(transportistaRequest);
                 var AntiguoRegistro = await _context.Transportista.FirstOrDefaultAsync(x => x.Transportista_Id == transportistaRequest.Transportista_Id);
@@ -90,11 +91,11 @@ namespace TranporteSistem.Features.Transportista.Services
                 transportista.Transportista_Id = 0;
                 await _context.AddAsync(transportista);
                 await _context.SaveChangesAsync();
-                return Ok($"Transportista {transportista.PrimerNombre} ha sido actualizado");
+                return Ok(Messages.MSC011);
             }
             catch (Exception)
             {
-                return NotFound("Error al actualizar transportistas");
+                return NotFound(Messages.MSE016);
             }
         }
         public async Task<ActionResult> EliminarTransportista(TransportistaRequestDeleteDto transportistaRequest)
@@ -104,16 +105,16 @@ namespace TranporteSistem.Features.Transportista.Services
                 var transportista = await _context.Transportista.FirstOrDefaultAsync(x => x.Transportista_Id == transportistaRequest.Transportista_Id);
                 if(transportista == null)
                 {
-                    return NotFound("Transportista no encontrado");
+                    return NotFound(Messages.MSI008);
                 }
                 transportista.Estado = false;
                 _context.Update(transportista);
                 await _context.SaveChangesAsync();
-                return Ok($"Transportista {transportista.PrimerNombre} eliminado correctamente");
+                return Ok(Messages.MSC012);
             }
             catch (Exception)
             {
-                return NotFound("Error al eliminar transportistas");
+                return NotFound(Messages.MSE017);
             }
         }
     }

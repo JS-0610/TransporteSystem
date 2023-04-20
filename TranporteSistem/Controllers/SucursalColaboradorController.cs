@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using TranporteSistem.Common;
 using TranporteSistem.Features.SucursalColaborador.DTO;
 using TranporteSistem.Features.SucursalColaborador.Services;
 using TranporteSistem.Interfaces;
@@ -27,7 +28,7 @@ namespace TranporteSistem.Controllers
             catch (Exception)
             {
 
-                return NotFound("Error en la conexión");
+                return NotFound(Messages.MSE001);
             }
         }
 
@@ -41,7 +42,7 @@ namespace TranporteSistem.Controllers
             catch (Exception)
             {
 
-                return NotFound("Error en la conexión");
+                return NotFound(Messages.MSE001);
             }
         }
 
@@ -55,7 +56,7 @@ namespace TranporteSistem.Controllers
             catch (Exception)
             {
 
-                return NotFound("Error en la conexión");
+                return NotFound(Messages.MSE001);
             }
         }
         [HttpPut]
@@ -68,7 +69,7 @@ namespace TranporteSistem.Controllers
             catch (Exception)
             {
 
-                return NotFound("Error en la conexión");
+                return NotFound(Messages.MSE001);
             }
         }
         [HttpDelete]
@@ -81,7 +82,7 @@ namespace TranporteSistem.Controllers
             catch (Exception)
             {
 
-                return NotFound("Error en la conexión");
+                return NotFound(Messages.MSE001);
             }
         }
     }

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using TranporteSistem.Common;
 using TranporteSistem.Features.Sucursal.DTO;
 using TranporteSistem.Interfaces;
 using TranporteSistem.Models;
@@ -32,7 +33,7 @@ namespace TranporteSistem.Features.Sucursal.Services
             catch (Exception)
             {
 
-                return NotFound("Error al obtener las sucursales");
+                return NotFound(Messages.MSE006);
             }
         }
 
@@ -51,7 +52,7 @@ namespace TranporteSistem.Features.Sucursal.Services
             catch (Exception)
             {
 
-                return NotFound("Error al obtener los nombres de las sucursales");
+                return NotFound(Messages.MSE006);
             }
         }
 
@@ -62,16 +63,16 @@ namespace TranporteSistem.Features.Sucursal.Services
                 var existeNombreDuplicado = await _context.Sucursal.AnyAsync(x => x.Nombre == sucursalRequest.Nombre && x.Estado == true);
                 if (existeNombreDuplicado)
                 {
-                    return BadRequest("La sucursal ya existe");
+                    return BadRequest(Messages.MSI003);
                 }
                 var sucursal = _mapper.Map<Models.Sucursal>(sucursalRequest);
                 await _context.AddAsync(sucursal);
                 await _context.SaveChangesAsync();
-                return Ok("Sucursal agregada de forma exitosa");
+                return Ok(Messages.MSC004);
             }
             catch (Exception)
             {
-                return NotFound("Error al agregar la sucursal");
+                return NotFound(Messages.MSE007);
             }
         }
         public async Task<ActionResult> ActualizarSucursal(SucursalRequestPutDto sucursalRequest)
@@ -82,7 +83,7 @@ namespace TranporteSistem.Features.Sucursal.Services
                 var existe = await _context.Sucursal.AnyAsync(x => x.Sucursal_Id == sucursalRequest.Sucursal_Id && x.Estado==true);
                 if (!existe)
                 {
-                    return NotFound("Sucursal no Encontrada");
+                    return NotFound(Messages.MSI004);
                 }
                 var sucursal = _mapper.Map<Models.Sucursal>(sucursalRequest);
                 var AntiguoRegistro = await _context.Sucursal.FirstOrDefaultAsync(x => x.Sucursal_Id == sucursalRequest.Sucursal_Id);
@@ -91,11 +92,11 @@ namespace TranporteSistem.Features.Sucursal.Services
                 sucursal.Sucursal_Id = 0;
                 await _context.AddAsync(sucursal);
                 await _context.SaveChangesAsync();
-                return Ok($"Sucursal {sucursal.Nombre} ha sido actualizada");
+                return Ok(Messages.MSC005);
             }
             catch (Exception)
             {
-                return NotFound("Error al actualizar la sucursal");
+                return NotFound(Messages.MSE008);
             }
         }
 
@@ -106,18 +107,18 @@ namespace TranporteSistem.Features.Sucursal.Services
                 var sucursal = await _context.Sucursal.FirstOrDefaultAsync(x => x.Sucursal_Id == sucursalRequest.Sucursal_Id);
                 if(sucursal == null)
                 {
-                    return NotFound("Sucursal no encontrada");
+                    return NotFound(Messages.MSI004);
                 }
 
                 sucursal.Estado = false;
                 _context.Update(sucursal);
                 await _context.SaveChangesAsync();
-                return Ok($"La sucursal {sucursal.Nombre} ha sido eliminada");
+                return Ok(Messages.MSC006);
             }
             catch (Exception)
             {
 
-                return NotFound("Error al actualizar la sucursal");
+                return NotFound(Messages.MSE009);
             }
             
 

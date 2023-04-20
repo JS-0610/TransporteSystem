@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using TranporteSistem.Common;
 using TranporteSistem.Features.ViajeDetalle.DTO;
 using TranporteSistem.Interfaces;
 using TranporteSistem.Models;
@@ -44,7 +45,7 @@ namespace TranporteSistem.Features.ViajeDetalle.Services
             }
             catch (Exception)
             {
-                return NotFound("Error al obtener los detalles del viaje");
+                return NotFound(Messages.MSE020);
             }
         }
     }

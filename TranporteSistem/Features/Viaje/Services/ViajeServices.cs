@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using TranporteSistem.Common;
 using TranporteSistem.Features.Viaje.DTO;
 using TranporteSistem.Interfaces;
 using TranporteSistem.Models;
@@ -25,7 +26,7 @@ namespace TranporteSistem.Features.Viaje.Services
                 var existeDuplicado = await _context.Viaje.AnyAsync(x=>x.Transportista_Id == request.Transportista_Id && x.Sucursal_Id == request.Sucursal_Id && x.Fecha == DateTime.Now);
                 if(existeDuplicado)
                 {
-                    return BadRequest("Ya existe un viaje para este transportista en esta sucursal");
+                    return BadRequest(Messages.MSI009);
                 }
                 var ViajeMaestro = _mapper.Map<Models.Viaje>(request);
                 await _context.AddAsync(ViajeMaestro);
@@ -54,11 +55,11 @@ namespace TranporteSistem.Features.Viaje.Services
                 ViajeMaestro.Total = PagoTotalViaje;
                 _context.Update(ViajeMaestro);
                 await _context.SaveChangesAsync();
-                return Ok("Viaje registrado de forma exitosa");
+                return Ok(Messages.MSC013);
             }
             catch (Exception)
             {
-                return NotFound("Error al registrar viaje");
+                return NotFound(Messages.MSE018);
             }
         }
 
@@ -86,7 +87,7 @@ namespace TranporteSistem.Features.Viaje.Services
             catch (Exception)
             {
 
-                return NotFound("Error al obtener el registro de los viajes");
+                return NotFound(Messages.MSE019);
             }
         }
     }

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using TranporteSistem.Common;
 using TranporteSistem.Features.Colaborador.DTO;
 using TranporteSistem.Interfaces;
 using TranporteSistem.Models;
@@ -34,7 +35,7 @@ namespace TranporteSistem.Features.Colaborador.Services
             }
             catch (Exception)
             {
-                return NotFound("Error de conexión");
+                return NotFound(Messages.MSE002);
             }
         }        
         public async Task<ActionResult<List<ColaboradorResponseNombreIdDto>>> ObtenerNombreColaboradores()
@@ -54,7 +55,7 @@ namespace TranporteSistem.Features.Colaborador.Services
             }
             catch (Exception)
             {
-                return NotFound("Error de conexión");
+                return NotFound(Messages.MSE002);
             }
         }
         public async Task<ActionResult> AgregarColaborador(ColaboradorRequestDto colaboradorRequest)
@@ -64,17 +65,17 @@ namespace TranporteSistem.Features.Colaborador.Services
                 var existeNombreDuplicado = await _context.Colaborador.AnyAsync(x => x.PrimerNombre == colaboradorRequest.PrimerNombre && x.PrimerApellido == colaboradorRequest.PrimerApellido && x.Estado == true);
                 if (existeNombreDuplicado)
                 {
-                    return BadRequest("El colaborador ya existe");
+                    return BadRequest(Messages.MSI001);
                 }
                 var colaborador = _mapper.Map<Models.Colaborador>(colaboradorRequest);
                 await _context.AddAsync(colaborador);
                 await _context.SaveChangesAsync();
-                return Ok("Colaborador agregado de forma exitosa");
+                return Ok(Messages.MSC001);
             }
             catch (Exception)
             {
 
-                return BadRequest("Ocurrió un error al agregar colaborador");
+                return BadRequest(Messages.MSE003);
             }
             
         }
@@ -85,7 +86,7 @@ namespace TranporteSistem.Features.Colaborador.Services
                 var existe = await _context.Colaborador.AnyAsync(x => x.Colaborador_Id == colaboradorRequest.Colaborador_Id && x.Estado == true);
                 if (!existe)
                 {
-                    return NotFound("Colaborador no encontrado");
+                    return NotFound(Messages.MSI002);
                 }
                 var colaborador = _mapper.Map<Models.Colaborador>(colaboradorRequest);
                 var AntiguoRegistro = await _context.Colaborador.FirstOrDefaultAsync(x => x.Colaborador_Id == colaboradorRequest.Colaborador_Id);
@@ -94,11 +95,11 @@ namespace TranporteSistem.Features.Colaborador.Services
                 colaborador.Colaborador_Id = 0;
                 await _context.AddAsync(colaborador);
                 await _context.SaveChangesAsync();
-                return Ok($"Colaborador {colaborador.PrimerNombre} {colaborador.PrimerApellido} ha sido actualizado");
+                return Ok(Messages.MSC002);
             }
             catch (Exception)
             {
-                return NotFound("Ocurrió un error al actualizar el colaborador");
+                return NotFound(Messages.MSE004);
             }
         }
         public async Task<ActionResult> EliminarColaborador(ColaboradorRequestDeleteDto colaboradorRequest)
@@ -108,16 +109,16 @@ namespace TranporteSistem.Features.Colaborador.Services
                 var colaborador = await _context.Colaborador.FirstOrDefaultAsync(x => x.Colaborador_Id == colaboradorRequest.Colaborador_Id);
                 if (colaborador == null)
                 {
-                    return NotFound("Colaborador no encontrado");
+                    return NotFound(Messages.MSI002);
                 }
                 colaborador.Estado = false;
                 _context.Update(colaborador);
                 await _context.SaveChangesAsync();
-                return Ok($"Colaborador {colaborador.PrimerNombre} {colaborador.PrimerApellido} ha sido eliminado");
+                return Ok(Messages.MSC003);
             }
             catch (Exception)
             {
-                return NotFound("Ocurrió un error al actualizar el colaborador");
+                return NotFound(Messages.MSE005);
             }
         }
     }

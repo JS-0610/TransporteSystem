@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using TranporteSistem.Common;
 using TranporteSistem.Features.SucursalColaborador.DTO;
 using TranporteSistem.Interfaces;
 using TranporteSistem.Models;
@@ -42,7 +43,7 @@ namespace TranporteSistem.Features.SucursalColaborador.Services
             catch (Exception)
             {
 
-                return NotFound("Error al obtener los colaboradores por sucursales");
+                return NotFound(Messages.MSE010);
             }
         }
         public async Task<ActionResult<List<SucursalColaboradorResponseDto>>> ObtenerColaboradorUnicaSucursal(int id)
@@ -69,7 +70,7 @@ namespace TranporteSistem.Features.SucursalColaborador.Services
             catch (Exception)
             {
 
-                return NotFound("Error al obtener los colaboradores por sucursales");
+                return NotFound(Messages.MSE010);
             }
         }
 
@@ -80,16 +81,16 @@ namespace TranporteSistem.Features.SucursalColaborador.Services
                 var existeDuplicado = await _context.SucursalColaborador.AnyAsync(x => x.Colaborador_Id == request.Colaborador_Id && x.Sucursal_Id == request.Sucursal_Id && x.Estado == true);
                 if (existeDuplicado)
                 {
-                    return BadRequest("Este colaborador ya está agregado a esta sucursal");
+                    return BadRequest(Messages.MSI005);
                 }
                 var SucursalColaborador = _mapper.Map<Models.SucursalColaborador>(request);
                 await _context.AddAsync(SucursalColaborador); 
                 await _context.SaveChangesAsync();
-                return Ok("Sucursal asginada a colaborador de forma exitosa");
+                return Ok(Messages.MSC007);
             }
             catch (Exception)
             {
-                return NotFound("Error al agregar sucursal al colaborador");
+                return NotFound(Messages.MSE011);
             }
         }
 
@@ -100,7 +101,7 @@ namespace TranporteSistem.Features.SucursalColaborador.Services
                 var existeSucursalColaborador = await _context.SucursalColaborador.AnyAsync(x => x.SucursalColaborador_Id == request.SucursalColaborador_Id && x.Estado == true);
                 if (!existeSucursalColaborador)
                 {
-                    return NotFound("No se ha encontrado a este colaborador en esta sucursal");
+                    return NotFound(Messages.MSI006);
                 }
                 var AntiguoRegistro = await _context.SucursalColaborador.FirstOrDefaultAsync(x => x.SucursalColaborador_Id == request.SucursalColaborador_Id);
                 var SucursalColaborador = _mapper.Map<Models.SucursalColaborador>(request);
@@ -115,11 +116,11 @@ namespace TranporteSistem.Features.SucursalColaborador.Services
                 await _context.AddAsync(SucursalColaborador);
 
                 await _context.SaveChangesAsync();
-                return Ok("Distancia entre colaborador y sucursal actualizada");
+                return Ok(Messages.MSC008);
             }
             catch (Exception)
             {
-                return NotFound("Error al actualizar la distancia");
+                return NotFound(Messages.MSE012);
             }
         }
 
@@ -131,16 +132,16 @@ namespace TranporteSistem.Features.SucursalColaborador.Services
                 var SucursalColaborador = await _context.SucursalColaborador.FirstOrDefaultAsync(x => x.SucursalColaborador_Id == request.SucursalColaborador_Id && x.Estado == true);
                 if (SucursalColaborador is null)
                 {
-                    return NotFound("No se ha encontrado a este colaborador en esta sucursal");
+                    return NotFound(Messages.MSI006);
                 }
                 SucursalColaborador.Estado = false;
                 _context.Update(SucursalColaborador);
                 await _context.SaveChangesAsync();
-                return Ok("Colaborador removido de la sucursal");
+                return Ok(Messages.MSC009);
             }
             catch (Exception)
             {   
-                return NotFound("Error al remover el colaborador de la sucursal");
+                return NotFound(Messages.MSE013);
             }
         }
 

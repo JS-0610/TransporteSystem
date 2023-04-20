@@ -2,6 +2,7 @@
 using TranporteSistem.Features.Colaborador.DTO;
 using TranporteSistem.Models;
 using TranporteSistem.Interfaces;
+using TranporteSistem.Common;
 
 namespace TranporteSistem.Controllers
 {
@@ -24,7 +25,7 @@ namespace TranporteSistem.Controllers
             }
             catch (Exception)
             {
-                return NotFound("Error en la Conexión");
+                return NotFound(Messages.MSE001);
             }
         }
 
@@ -37,7 +38,7 @@ namespace TranporteSistem.Controllers
             }
             catch (Exception)
             {
-                return NotFound("Error en la Conexión");
+                return NotFound(Messages.MSE001);
             }
         }
 
@@ -51,7 +52,7 @@ namespace TranporteSistem.Controllers
             }
             catch (Exception)
             {
-                return NotFound("Error de Conexión");
+                return NotFound(Messages.MSE001);
             }
         }
 
@@ -64,7 +65,7 @@ namespace TranporteSistem.Controllers
             }
             catch (Exception)
             {
-                return NotFound("Erro de Conexión");
+                return NotFound(Messages.MSE001);
             }
         }
 
@@ -77,7 +78,7 @@ namespace TranporteSistem.Controllers
             }
             catch (Exception)
             {
-                return NotFound("Erro de Conexión");
+                return NotFound(Messages.MSE001);
             }
         }
     }

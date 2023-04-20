@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using TranporteSistem.Common;
 using TranporteSistem.Features.Sucursal.DTO;
 using TranporteSistem.Interfaces;
 using TranporteSistem.Models;
@@ -29,7 +30,7 @@ namespace TranporteSistem.Controllers
             catch (Exception)
             {
 
-                return NotFound("Error en la Conexión");
+                return NotFound(Messages.MSE001);
             }
         }
 
@@ -43,7 +44,7 @@ namespace TranporteSistem.Controllers
             catch (Exception)
             {
 
-                return NotFound("Error en la Conexión");
+                return NotFound(Messages.MSE001);
             }
         }
 
@@ -57,7 +58,7 @@ namespace TranporteSistem.Controllers
             catch (Exception)
             {
 
-                return NotFound("Error en la Conexión");
+                return NotFound(Messages.MSE001);
             }
         }
 
@@ -71,7 +72,7 @@ namespace TranporteSistem.Controllers
             catch (Exception)
             {
 
-                return NotFound("Error en la Conexión");
+                return NotFound(Messages.MSE001);
             }
 
         }
@@ -86,7 +87,7 @@ namespace TranporteSistem.Controllers
             catch (Exception)
             {
 
-                return NotFound("Error en la Conexión");
+                return NotFound(Messages.MSE001);
             }
 
         }

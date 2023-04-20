@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using TranporteSistem.Common;
 using TranporteSistem.Features.ViajeDetalle.DTO;
 using TranporteSistem.Interfaces;
 
@@ -25,7 +26,7 @@ namespace TranporteSistem.Controllers
             }
             catch (Exception)
             {
-                return NotFound("Error en la conexión");
+                return NotFound(Messages.MSE001);
             }
         }
     }
