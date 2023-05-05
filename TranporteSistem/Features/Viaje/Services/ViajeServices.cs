@@ -31,6 +31,7 @@ namespace TranporteSistem.Features.Viaje.Services
                 var ViajeMaestro = _mapper.Map<Models.Viaje>(request);
                 await _context.AddAsync(ViajeMaestro);
                 await _context.SaveChangesAsync();
+               
                 var TarifaTransportista = await (from t in _context.Transportista
                                      where t.Transportista_Id == request.Transportista_Id
                                      select t.Tarifa).FirstOrDefaultAsync();
@@ -52,6 +53,7 @@ namespace TranporteSistem.Features.Viaje.Services
 
                     PagoTotalViaje += TarifaTransportista * DistanciaRecorrida;
                 }
+
                 ViajeMaestro.Total = PagoTotalViaje;
                 _context.Update(ViajeMaestro);
                 await _context.SaveChangesAsync();
@@ -74,6 +76,7 @@ namespace TranporteSistem.Features.Viaje.Services
                                     {
                                         Viaje_Id = v.Viaje_Id,
                                         NombreTransportista = t.PrimerNombre,
+                                        Fecha = v.Fecha,
                                         PagoTransportista = v.Total,
                                         TarifaTransportista = t.Tarifa,
                                         DistanciaRecorrida = v.Total / t.Tarifa

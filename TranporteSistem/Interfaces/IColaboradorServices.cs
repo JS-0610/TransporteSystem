@@ -12,6 +12,6 @@ namespace TranporteSistem.Interfaces
         public Task<ActionResult> AgregarColaborador(ColaboradorRequestDto colaboradorRequest);
         public Task<ActionResult> ActualizarColaborador(ColaboradorRequestPutDto colaborador);
 
-        public Task<ActionResult> EliminarColaborador(ColaboradorRequestDeleteDto colaborador);
+        public Task<ActionResult> EliminarColaborador(ColaboradorRequestDeleteDto request);
     }
 }

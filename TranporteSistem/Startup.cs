@@ -30,7 +30,14 @@ namespace TranporteSistem
             services.AddScoped<ISucursalColaboradorServices, SucursalColaboradorServices>();
             services.AddScoped<IViajeServices, ViajeServices>();
             services.AddScoped<IViajeDetalleServices, ViajeDetalleServices>();
-            
+
+            services.AddCors(options => options.AddPolicy(name: "AngularFrontEnd",
+                policy =>
+                {
+                    policy.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader();
+
+                }));
+
             services.AddAutoMapper(typeof(Program).Assembly);
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("defaultConnection")));
         }
@@ -42,7 +49,7 @@ namespace TranporteSistem
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-
+            app.UseCors("AngularFrontEnd");
             app.UseHttpsRedirection();
             app.UseRouting();
 

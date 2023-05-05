@@ -102,11 +102,11 @@ namespace TranporteSistem.Features.Colaborador.Services
                 return NotFound(Messages.MSE004);
             }
         }
-        public async Task<ActionResult> EliminarColaborador(ColaboradorRequestDeleteDto colaboradorRequest)
+        public async Task<ActionResult> EliminarColaborador(ColaboradorRequestDeleteDto request)
         {
             try
             {
-                var colaborador = await _context.Colaborador.FirstOrDefaultAsync(x => x.Colaborador_Id == colaboradorRequest.Colaborador_Id);
+                var colaborador = await _context.Colaborador.FirstOrDefaultAsync(x => x.Colaborador_Id == request.Colaborador_Id);
                 if (colaborador == null)
                 {
                     return NotFound(Messages.MSI002);

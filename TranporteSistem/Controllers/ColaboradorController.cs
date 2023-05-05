@@ -70,11 +70,11 @@ namespace TranporteSistem.Controllers
         }
 
         [HttpDelete]
-        public async Task<ActionResult> Delete(ColaboradorRequestDeleteDto colaboradorRequest)
+        public async Task<ActionResult> Delete(ColaboradorRequestDeleteDto request)
         {
             try
             {
-                return await _services.EliminarColaborador(colaboradorRequest);
+                return await _services.EliminarColaborador(request);
             }
             catch (Exception)
             {
